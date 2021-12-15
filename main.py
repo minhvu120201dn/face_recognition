@@ -9,7 +9,7 @@ while True:
     # Capture frame by frame
     ret, frame = cap.read()
 
-    # Detect the face\
+    # Detect the face
     faces = face_cascade.detectMultiScale(frame, minNeighbors=6)
     for x,y,w,h in faces:
         color = (255,0,0) #BGR 0-255
