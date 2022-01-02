@@ -23,21 +23,25 @@ if __name__ == '__main__':
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, minNeighbors=5)
         for x,y,w,h in faces:
+            # Draw a rectangle around the face
             color = (255,0,0) #BGR 0-255
             stroke = 2
             end_cord_x = x + w
             end_cord_y = y + h
             cv2.rectangle(frame, (x, y), (end_cord_x, end_cord_y), color, stroke)
-
+            # Predict the label
             roi_gray = gray[y:y+h, x:x+w]
             id_, conf = recognizer.predict(roi_gray)
+            # Show label on the screen
             font = cv2.FONT_HERSHEY_SIMPLEX
-            text = labels[id_]
-            #text += ', conf = ' + str(round(conf,2))
             color = (255,255,255)
             stroke = 2
+            if conf < 75:
+                text = labels[id_]
+                #text += ', ' + str(conf)
+            else:
+                text = 'unknown'
             cv2.putText(frame, text, (x,y), font, 1, color, stroke, cv2.LINE_AA)
-            #print(id_)
 
         # Display the resulting frame
         cv2.imshow('frame',frame)
